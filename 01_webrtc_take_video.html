@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<video autoplay playsinline id="player">
+
+
+<script>
+
+  // 获取 HTML 页面中的 video 标签
+  var videoplay = document.querySelector('video#player');
+
+  // 播放视频流
+  function gotMediaStream(stream){
+    videoplay.srcObject = stream;
+  }
+
+  function handleError(err){
+    console.log('getUserMedia error:', err);
+  }
+
+  // 对采集的数据做一些限制
+  var constraints = {
+    video : {
+      width: 1280,
+      height: 720,
+    },
+    audio : true
+  }
+
+  // 采集音视频数据流
+  navigator.mediaDevices.getUserMedia(constraints)
+    .then(gotMediaStream)
+    .catch(handleError);
+
+</script>
+</body>
+</html>

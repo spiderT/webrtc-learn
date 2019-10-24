@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<button id="recording">Start Record</button>
+<button id="playback">playback</button>
+<button id="download" >download</button>
+<video autoplay playsinline id="play"></video>
+<video id="replay"></video>
+
+<script>
+  let videoTypes = "video/webm\;codecs=vp8";
+  let userMediaSetting = { video: true };
+  let playVideo = document.querySelector('video#play');
+  let rePlayVideo = document.querySelector('video#replay');
+  let recordingButton = document.querySelector('button#recording');
+  let playbackButton = document.querySelector('button#playback');
+  let downloadButton = document.querySelector('button#download');
+  let buffer;
+  let mediaRecorder;
+  let blob;
+
+  function init() {
+    if (!(mediaSupport() && mediaRecorderSupport()))
+      return;
+    getVideo();
+  }
+
+  function mediaSupport() {
+    if (!navigator.mediaDevices) {
+      console.log('不支持 mediaDevices');
+      return false;
+    }
+    console.log('支持 mediaDevices');
+    return true;
+  }
+
+  function mediaRecorderSupport() {
+    if (!MediaRecorder.isTypeSupported(videoTypes)) {
+      console.log(`不支持 ${videoTypes}`);
+      return false;
+    }
+    console.log(`支持 ${videoTypes}`);
+    return true;
+  }
+
+  function getVideo() {
+    navigator.mediaDevices.getDisplayMedia(userMediaSetting)
+      .then(handleGetVideo)
+      .catch(handleGetVideoError)
+  }
+
+  function handleGetVideo(mediaStream) {
+    playVideo.srcObject = mediaStream;
+  }
+
+  function handleGetVideoError(err) {
+    console.log(`获取视频输入出错: ${err.name} : ${err.message}`)
+  }
+
+  function recordingVideo() {
+    if ( typeof(mediaRecorder) != "undefined" && mediaRecorder.state === 'recording') {
+      console.log('已开始录制,请勿重复录制');
+      return;
+    }
+    console.log('开始录制');
+    buffer = [];
+    let options = {
+      mimeType : videoTypes
+    };
+
+    mediaRecorder = new MediaRecorder(playVideo.srcObject, options);
+    mediaRecorder.ondataavailable = handleDataAvailable;
+    mediaRecorder.start(10);
+  }
+
+  function handleDataAvailable(d) {
+    if (d && d.data && d.data.size > 0) {
+      buffer.push(d.data);
+    }
+  }
+
+  function playbackVideo(){
+    blob = new Blob(buffer, {type:'video/webm'});
+    rePlayVideo.src = window.URL.createObjectURL(blob);
+    rePlayVideo.srcObject = null;
+    rePlayVideo.constructor = true;
+    rePlayVideo.play();
+  }
+
+  function download(){
+    blob = new Blob(buffer, {type:'video/webm'});
+    let a = document.createElement('a');
+    a.href = window.URL.createObjectURL(blob);
+    a.download = 'download.webm';
+    a.click();
+    a.remove();
+  }
+
+  recordingButton.addEventListener('click', function () {
+    recordingVideo();
+  });
+
+  playbackButton.addEventListener('click', function () {
+    playbackVideo();
+  });
+
+  downloadButton.addEventListener('click', function () {
+    download();
+  });
+
+  init();
+</script>
+</body>
+</html>

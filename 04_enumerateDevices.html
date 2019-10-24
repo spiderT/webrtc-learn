@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<script>
+  if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+    console.log("enumerateDevices() not supported.");
+  }
+
+  // List cameras and microphones.
+
+  navigator.mediaDevices.enumerateDevices()
+    .then(function(devices) {
+      devices.forEach(function(device) {
+        console.log(device.kind + ": " + device.label +
+          " id = " + device.deviceId);
+
+        // 有耳机
+        // audioinput: 默认 - 外置麦克风 (Built-in) id = default
+        // audioinput: 外置麦克风 (Built-in) id = 81f865d05becf5f91f48441a93b509720a850c4db86c1a396e51356a6514e99c
+        // videoinput: FaceTime HD Camera id = 1200d31c81381c7ac7ac249e91b03ee58c644008205f29f237f1f3662530c57c
+        // audiooutput: 默认 - 耳机 (Built-in) id = default
+        // audiooutput: 耳机 (Built-in) id = 670525b524f5ac9070ac0de228ca26c7fd46b63e7a0690c9c676a4caeac12f0a
+
+
+        // 无耳机
+        // audioinput: 默认 - 内置麦克风 (Built-in) id = default
+        // audioinput: 内置麦克风 (Built-in) id = 81f865d05becf5f91f48441a93b509720a850c4db86c1a396e51356a6514e99c
+        // videoinput: FaceTime HD Camera id = 1200d31c81381c7ac7ac249e91b03ee58c644008205f29f237f1f3662530c57c
+        // audiooutput: 默认 - 内置扬声器 (Built-in) id = default
+        // audiooutput: 内置扬声器 (Built-in) id = 670525b524f5ac9070ac0de228ca26c7fd46b63e7a0690c9c676a4caeac12f0a
+
+      });
+    })
+    .catch(function(err) {
+      console.log(err.name + ": " + err.message);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>WebRTC 视频聊天demo</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+<script></script>
+<script src="https://webrtc.github.io/adapter/adapter.js" type="text/javascript"></script>
+
+<header class="clearfix">
+    <p class="key-wrap">
+        Key:
+        <input type="text" name="key" id="key" onkeyup="if (event.keyCode === 13) {connect();return false;}"/>
+        <button id="connect" onclick="connect()">连接</button>
+        <span id="statusLine" style="display:none">状态：
+        <span id="status">已断开</span>
+      </span>
+        <button id="call" style="display:none" onclick="call()">呼叫</button>
+    </p>
+
+
+</header>
+
+
+<div class="chat-msg-wrap clearfix">
+    <div class="signal-wrap">
+        <b>发出的信令消息</b>
+        <br/>
+        <textarea id="outMessages" class="message-wrap"></textarea>
+        <b>收到的信令消息</b>
+        <br/>
+        <textarea id="inMessages" class="message-wrap"></textarea>
+    </div>
+
+    <div class="msg-wrap">
+        <p>聊天消息：</p>
+        <div id="chatBox" class="msg-container"></div>
+        <p>输入区：</p>
+        <div class="edit-wrap">
+            <div class="btn-wrap">
+                <span class="btn-icon" onclick="openAudio()">语音</span>
+            </div>
+            <textarea class="edit-container" name="chat" id="chat"
+                      onkeyup="if (event.keyCode === 13){sendChat();return false;}"></textarea>
+            <div class="record-wrap" id="recordWrap"></div>
+
+            <div class="bottom-btn">
+                <button class="send-btn" onclick="sendChat()">发送</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-wrap">
+        <div id="scMessage" class="sign-msg-wrap">
+            <p>信道消息：
+                <input type="text" width="100%" name="message" id="message"
+                       onkeyup="if (event.keyCode === 13){send();return false;}"/>
+                <button id="send" style="display:none" onclick="send()">发送</button>
+            </p>
+
+        </div>
+        <video id="yourVideo" autoplay controls muted class="your-video"></video>
+        <video autoplay id="myVideo" controls muted class="my-video"></video>
+
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="/clientXHRSignaling.js"></script>
+<script type="text/javascript" src="/HZRecord.js"></script>
+<script type="text/javascript" src="/index.js"></script>
+
+</html>

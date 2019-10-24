@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>audio record</title>
+</head>
+<body>
+<span style="white-space:pre">		</span>
+<audio controls autoplay class="audio-player" id="player"></audio>
+<input type="button" value="开始录音" onclick="startRecording()"/>
+<input type="button" value="停止录音" onclick="stopRecord()"/>
+<input type="button" value="播放录音" onclick="playRecord()"/>
+<div id="state"></div>
+<script>
+  let mediaRecorder;
+  let audio = document.getElementById('player');
+  let stateEle = document.getElementById('state');
+  if (navigator.mediaDevices.getUserMedia) {
+    const constraints = {audio: true};
+    navigator.mediaDevices.getUserMedia(constraints).then(
+      stream => {
+        console.log("stream===>", stream);
+        console.log("授权成功！");
+
+        // MediaRecorder到chrome49 才支持。
+        mediaRecorder = new MediaRecorder(stream);
+
+        startRecording = () => {
+          // 开始记录媒体;这个方法可以通过一个时间片参数值以毫秒为单位。
+          // 如果这是指定的,媒体将被捕获在单独的大块的时间,而不是默认的行为记录媒体在一大块。
+          mediaRecorder.start(10);
+          stateEle.innerHTML = "录音中...";
+        };
+
+        stopRecord = () => {
+          if (mediaRecorder.state === "recording") {
+            // 停止录制. 同时触发dataavailable事件,返回一个存储Blob内容的录制数据.之后不再记录
+            mediaRecorder.stop();
+
+            stateEle.innerHTML = "录音结束";
+          }
+          console.log("录音器状态：", mediaRecorder.state);
+        };
+
+        playRecord = () => {
+          let blob = new Blob(chunks, {type: "audio/wav; codecs=opus"});
+          let audioURL = window.URL.createObjectURL(blob);
+          audio.src = audioURL;
+        };
+
+
+        let chunks = [];
+
+        // 当有音视频数据来了之后，触发该事件
+        mediaRecorder.ondataavailable = function (e) {
+          console.log('e===>', e);
+          console.log('e===>.data', e.data);
+          chunks.push(e.data);
+        };
+
+      },
+      () => {
+        console.error("授权失败！");
+      }
+    );
+  } else {
+    console.error("浏览器不支持 getUserMedia");
+  }
+
+
+</script>
+</body>
+</html>

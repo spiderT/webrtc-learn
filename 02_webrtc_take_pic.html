@@ -1,0 +1,141 @@
+<html>
+<head>
+    <title>WebRTC capture video and audio</title>
+
+    <style>
+        .none {
+            -webkit-filter: none;
+        }
+
+        .blur {
+            -webkit-filter: blur(3px);
+        }
+
+        .grayscale {
+            -webkit-filter: grayscale(1);
+        }
+
+        .invert {
+            -webkit-filter: invert(1);
+        }
+
+        .sepia {
+            -webkit-filter: sepia(1);
+        }
+
+    </style>
+</head>
+
+<body>
+<section>
+    <div>
+        <label>Filter:</label>
+        <select id="filter">
+            <option value="none">None</option>
+            <option value="blur">blur</option>
+            <option value="grayscale">Grayscale</option>
+            <option value="invert">Invert</option>
+            <option value="sepia">sepia</option>
+        </select>
+    </div>
+
+    <div>
+        <video autoplay playsinline id="player"></video>
+    </div>
+
+</section>
+<section>
+    <div>
+        <button id="snapshot">Take snapshot</button>
+    </div>
+    <div>
+        <canvas id="picture"></canvas>
+    </div>
+    <div>
+        <button id="save"> download </button>
+    </div>
+</section>
+
+<script>
+  'use strict'
+
+  //filter
+  var filtersSelect = document.querySelector('select#filter');
+
+  //picture
+  var snapshot = document.querySelector('button#snapshot');
+  var picture = document.querySelector('canvas#picture');
+  picture.width = 640;
+  picture.height = 480;
+
+  var videoplay = document.querySelector('video#player');
+
+
+
+  function handleError(err){
+    console.log('getUserMedia error:', err);
+  }
+
+  // 播放视频流
+  function gotMediaStream(stream){
+    videoplay.srcObject = stream;
+  }
+
+  function start() {
+
+    if(!navigator.mediaDevices ||
+      !navigator.mediaDevices.getUserMedia){
+
+      console.log('getUserMedia is not supported!');
+      return;
+
+    }else{
+
+      var constraints = {
+        video : {
+          width: 640,
+          height: 480,
+          frameRate:15,
+          facingMode: 'enviroment',
+          deviceId : undefined
+        },
+        audio : false
+      }
+
+      navigator.mediaDevices.getUserMedia(constraints)
+        .then(gotMediaStream)
+        .catch(handleError);
+    }
+  }
+
+  filtersSelect.onchange = function(){
+    videoplay.className = filtersSelect.value;
+  }
+
+  snapshot.onclick = function() {
+    picture.className = filtersSelect.value;
+    picture.getContext('2d').drawImage(videoplay, 0, 0, picture.width, picture.height);
+  }
+
+
+  function downLoad(url){
+    console.log('url', url);
+    var oA = document.createElement("a");
+    oA.download = 'photo';// 设置下载的文件名，默认是'下载'
+    oA.href = url;
+    document.body.appendChild(oA);
+    oA.click();
+    oA.remove(); // 下载之后把创建的元素删除
+  }
+
+
+  document.querySelector("button#save").onclick = function (){
+    downLoad(picture.toDataURL("image/jpeg"));
+  }
+
+
+  start();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+video {
+    width: 100%;
+    height: 240px;
+    border: 1px solid #ccc;
+    background-color: #000;
+}
+
+textarea {
+    border: 1px solid #ccc;
+    outline: 0;
+    resize: none;
+}
+
+.key-wrap {
+    float: left;
+}
+
+/*.sign-msg-wrap {*/
+    /*float: right;*/
+/*}*/
+
+.clearfix {
+    zoom: 1;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: '';
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.video-wrap, .msg-wrap,.signal-wrap {
+    display: inline-block;
+    width: 30%;
+    float: left;
+}
+
+.msg-wrap {
+    margin: 0 20px;
+}
+
+.msg-wrap p {
+    margin: 0;
+}
+
+.message-wrap {
+    width: 100%;
+    height: 400px;
+}
+
+.msg-container {
+    width: 100%;
+    height: 560px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.edit-container {
+    width: calc(100% - 4px);
+    height: 170px;
+    border: none;
+}
+
+.send-btn {
+    display: block;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    background: #e5ecf0;
+    color: #5c6e79;
+    border: 1px solid #9aabb3;
+    border-radius: 5px;
+    float: right;
+    width: 70px;
+    cursor: pointer;
+}
+
+.bottom-btn {
+    height: 30px;
+    width: 100%;
+}
+
+.edit-wrap {
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+.record-wrap {
+    position: absolute;
+    top: 26px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 26px);
+    display: none;
+}
+
+
+.btn-wrap {
+    background-color: rgba(0, 0, 0, 0.1);
+    height: 26px;
+}
+
+.btn-icon {
+    background: none;
+    color: #9e9e9e;
+    border: 2px solid #9e9e9e;
+    height: 15px;
+    line-height: 15px;
+    padding: 0 5px;
+    border-radius: 2px;
+    margin: 7px 10px 0 0;
+    cursor: pointer;
+}
+
+.receive-msg-item{
+    text-align: left;
+    position: relative;
+    padding-left: 40px;
+}
+
+.receive-msg-item:before {
+    display: block;
+    content: 'A';
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    background-color: green;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.send-msg-item {
+    text-align: right;
+    position: relative;
+    padding-right: 40px;
+}
+
+.send-msg-item:before {
+    display: block;
+    content: 'B';
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    background-color: red;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.msg-wrap .send-msg-item, .msg-wrap .receive-msg-item {
+    margin-bottom: 10px;
+    line-height: 32px;
+}
+
+.audio-start-tip, .audio-pending-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #ccc;
+    padding: 0 10px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.my-video{
+    height: 600px;
+}
+
+.video-wrap{
+    margin-top: 40px;
+    position: relative;
+    width: 35%;
+}
+
+.your-video{
+    position: absolute;
+    width: 50%;
+    top: 60px;
+    right: 0;
+}
+
+
